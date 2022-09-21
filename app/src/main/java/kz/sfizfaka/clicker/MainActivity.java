@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     String clicknumber1 = "Ready?";
     String sf;
     String sf2;
+    String sf3;
     int clickcount = 0;
     int clickcount1 = 0;
     Button btn3;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     long hundclick;
     long finaltime;
     long finaltime1;
-    long firstclick1;
+    long firstclick1 = 0;
     long hundclick1;
 
     @Override
@@ -56,14 +57,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn:
-            firstclick = System.currentTimeMillis();
             clickcount = clickcount + 1;
             clicknumber = String.valueOf(clickcount);
             btn4.setText(clicknumber);
-
+                if(clickcount == 1)
+                    firstclick = System.currentTimeMillis();
                 if(clickcount == 100) {
                     hundclick = System.currentTimeMillis();
-                    finaltime = (hundclick - firstclick)*100;
+                    finaltime = hundclick - firstclick;
                     sf = String.valueOf(finaltime);
                     Intent intent = new Intent(this, player1.class);
                     intent.putExtra("time1",sf);
@@ -72,16 +73,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             break;
 
             case R.id.btn2:
-            firstclick1 = System.currentTimeMillis()*100;
             clickcount1 = clickcount1 + 1;
             clicknumber1 = String.valueOf(clickcount1);
             btn3.setText(clicknumber1);
+                if(clickcount1 == 1)
+                    firstclick1 = System.currentTimeMillis();
                 if(clickcount1 == 100) {
-                    hundclick1 = System.currentTimeMillis()*100;
-                    finaltime1 = (hundclick1 - firstclick1);
+                    hundclick1 = System.currentTimeMillis();
+                    finaltime1 = (hundclick1 - firstclick1)/1000;
                     sf2 = String.valueOf(finaltime1);
+                    //sf3 = String.valueOf(firstclick1);
                     Intent intent = new Intent(this, player2.class);
                     intent.putExtra("time2",sf2);
+                   // intent.putExtra("time3",sf3);
                     startActivity(intent);
                 }
             break;
