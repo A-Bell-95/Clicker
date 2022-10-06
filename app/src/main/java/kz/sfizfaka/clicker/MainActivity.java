@@ -2,21 +2,25 @@ package kz.sfizfaka.clicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     String clicknumber = "Ready?";
     String clicknumber1 = "Ready?";
-    String sf;
-    String sf2;
-    String sf3;
+    String sf = "";
+    String sf1 = "";
+   // String sf3;
     int clickcount = 0;
     int clickcount1 = 0;
     Button btn3;
@@ -27,11 +31,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     long finaltime1;
     long firstclick1 = 0;
     long hundclick1;
+    EditText etn1;
+    EditText etn2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    etn1 = findViewById(R.id.etpn1);
+    etn2 = findViewById(R.id.etpn2);
 
     Button btn = findViewById(R.id.btn);
     btn.setOnClickListener(this);
@@ -42,19 +51,34 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     Button btn5 = findViewById(R.id.btn5);
     btn5.setOnClickListener(this);
 
+    Button btnAdv = findViewById(R.id.btnAdv);
+    btnAdv.setOnClickListener(this);
+
     btn3 = findViewById(R.id.btn3);
     btn3.setText(clicknumber);
 
     btn4 = findViewById(R.id.btn4);
     btn4.setText(clicknumber1);
-
-//    TextView timer = findViewById(R.id.timer);
-//    timer.setText("");
-
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 1, 0, "Leaderboard");
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == 1 ){
+            Intent intent = new Intent(this, Leaderboard.class);
+            intent.putExtra("time1",sf);
+            intent.putExtra("etname1",etn1.getText().toString());
+            intent.putExtra("time2",sf1);
+            intent.putExtra("etname2",etn2.getText().toString());
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
+        @Override
     public void onClick(View v) {
+        Intent intent2;
         switch (v.getId()) {
             case R.id.btn:
             clickcount = clickcount + 1;
@@ -64,10 +88,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     firstclick = System.currentTimeMillis();
                 if(clickcount == 100) {
                     hundclick = System.currentTimeMillis();
-                    finaltime = hundclick - firstclick;
+                    finaltime = (hundclick - firstclick);
                     sf = String.valueOf(finaltime);
                     Intent intent = new Intent(this, player1.class);
                     intent.putExtra("time1",sf);
+                    intent.putExtra("etname1",etn1.getText().toString());
                     startActivity(intent);
                 }
             break;
@@ -80,11 +105,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     firstclick1 = System.currentTimeMillis();
                 if(clickcount1 == 100) {
                     hundclick1 = System.currentTimeMillis();
-                    finaltime1 = (hundclick1 - firstclick1)/1000;
-                    sf2 = String.valueOf(finaltime1);
+                    finaltime1 = (hundclick1 - firstclick1);
+                    sf1 = String.valueOf(finaltime1);
                     //sf3 = String.valueOf(firstclick1);
                     Intent intent = new Intent(this, player2.class);
-                    intent.putExtra("time2",sf2);
+                    intent.putExtra("time2",sf1);
+                    intent.putExtra("etname2",etn2.getText().toString());
                    // intent.putExtra("time3",sf3);
                     startActivity(intent);
                 }
@@ -97,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             clicknumber1 = "Ready?";
             btn4.setText(clicknumber);
             btn3.setText(clicknumber);
+
+            case R.id.btnAdv:
+                intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lite-1x923400.top/ru"));
+                startActivity(intent2);
+                break;
         }
     }
 }

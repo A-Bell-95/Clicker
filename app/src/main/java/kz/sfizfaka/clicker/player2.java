@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class player2 extends AppCompatActivity {
     TextView tvView;
-    TextView tv2;
+    TextView tv8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,12 +16,14 @@ public class player2 extends AppCompatActivity {
         setContentView(R.layout.pl2);
 
     tvView = findViewById(R.id.time2);
-    //tv2 = findViewById(R.id.time3);
+    tv8 = findViewById(R.id.tv8);
     Intent intent = getIntent();
 
     String time2 = intent.getStringExtra("time2");
-    //String time3 = intent.getStringExtra("time3");
-    tvView.setText("Your time is:" + time2 + " sec");
-    //tv2.setText("Your time is:" + time3 + " sec");
+    String name2 = intent.getStringExtra("etname2");
+
+    tv8.setText("Player " + name2 + " WIN !!!");
+    tvView.setText("Your time is:" + time2 + " Milisec");
+
     }
 }
