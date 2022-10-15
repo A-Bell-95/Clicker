@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         @Override
     public void onClick(View v) {
-        Intent intent2;
         switch (v.getId()) {
             case R.id.btn:
             clickcount = clickcount + 1;
@@ -123,10 +122,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             clicknumber1 = "Ready?";
             btn4.setText(clicknumber);
             btn3.setText(clicknumber);
+            break;
 
             case R.id.btnAdv:
-                intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lite-1x923400.top/ru"));
-                startActivity(intent2);
+                Intent intent3;
+                intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://lite-1x923400.top/ru"));
+                startActivity(intent3);
                 break;
         }
     }
