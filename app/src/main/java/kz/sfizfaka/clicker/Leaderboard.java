@@ -5,35 +5,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class Leaderboard extends AppCompatActivity implements OnClickListener {
-    TextView ti1;
-    TextView ti2;
-    TextView ti3;
-    TextView ti4;
+public class Leaderboard extends AppCompatActivity  {
+    final String LOG_TAG = "mylogs";
 
-    TextView pl1;
-    TextView pl2;
-    TextView pl3;
-    TextView pl4;
+    TextView ti1,ti2,ti3,ti4;
+    TextView pl1,pl2,pl3,pl4;
 
+    String name1,name2,time1,time2;
 
-    String name1;
-    String name2;
-    String time1;
-    String time2;
-
-    Button btnSave;
-
+    int itime1,itime2,itime3, itime4 = 0;
 
     SharedPreferences sPref;
-
 
     final String SAVED_NAME1 = "saved_name1";
     final String SAVED_NAME2 = "saved_name2";
@@ -55,57 +44,93 @@ public class Leaderboard extends AppCompatActivity implements OnClickListener {
         ti4 = findViewById(R.id.ti4);
 
 
-        btnSave = findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(this);
-
-
         Intent intent = getIntent();
 
-        //String time1 = intent.getStringExtra("time1");
         name1 = intent.getStringExtra("etname1");
         name2 = intent.getStringExtra("etname2");
         time1 = intent.getStringExtra("time1");
         time2 = intent.getStringExtra("time2");
-        pl1.setText(""+name1+ "");
-        pl2.setText(""+name2+"");
-        ti1.setText(""+time1+"ms");
-        ti2.setText(""+time2+"ms");
+
+        if(time1.isEmpty())
+            time1 = "0";
+        if(name1.isEmpty())
+            name1 = "No name";
+        if(time2.isEmpty())
+            time2 = "0";
+        if(name2.isEmpty())
+        name2 = "No name";
+        itime1 = Integer.parseInt(time1);
+        itime2 = Integer.parseInt(time2);
+
+        if(itime1 < itime2){
+            pl1.setText(""+name1+"");
+            ti1.setText(""+time1+ "ms");
+            pl2.setText(""+name2+"");
+            ti2.setText(""+time2+" ms");
+        } else {
+            pl1.setText(""+name2+"");
+            ti1.setText(""+time2+ " ms");
+            pl2.setText(""+name1+"");
+            ti2.setText(""+time1+ " ms");
+        }
         loadResult();
 
-    }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnSave:
-                saveResult();
-                loadResult();
-                break;
+        String time3 = ti3.getText().toString();
+        String tme3 = time3.substring(0,(time3.length()-2));
+        itime3 = Integer.parseInt(tme3);
 
+        String time4= ti4.getText().toString();
+        String tme4 = time4.substring(0,(time4.length()-2));
+        itime4 = Integer.parseInt(tme4);
+
+
+        //Если время первого игрока меньше время 3 в лидерборде
+        if(itime1 < itime3 && itime1 != 0){
+            saveResult1();
+            loadResult();
         }
+        if(itime1 < itime4 && itime1 != 0){
+            saveResult1();
+            loadResult1_4();
+        }
+
+        if(itime2 < itime3 && itime2 != 0){
+            saveResult2();
+            loadResult2_3();
+        }
+        if(itime2 < itime4 && itime2 != 0){
+            saveResult2();
+            loadResult();
+        }
+
     }
+
     @Override
     public void onDestroy() {
 
         Toast.makeText(this,"Leaderboard was closed",Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
-    void saveResult(){
+    void saveResult1(){
         sPref = getPreferences(MODE_PRIVATE);
-
-        // Получение обьекта sPref класса шаред преференс
-        // Mode private для настройки доступа
         Editor ed = sPref.edit();
 
-
-        //Для редактирвоания данных нужен обьект эдитор вызываем его из сПреф
         ed.putString(SAVED_NAME1,pl1.getText().toString());
-        ed.putString(SAVED_NAME2,pl2.getText().toString());
         ed.putString(SAVED_TIME1,ti1.getText().toString());
+        ed.apply();
+
+        Toast.makeText(this, "Gratz, New record!!", Toast.LENGTH_SHORT).show();
+    }
+    void saveResult2(){
+        sPref = getPreferences(MODE_PRIVATE);
+        Editor ed = sPref.edit();
+
+        ed.putString(SAVED_NAME2,pl2.getText().toString());
         ed.putString(SAVED_TIME2,ti2.getText().toString());
 
         ed.apply();
 
-        Toast.makeText(this, "Result saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Gratz, New record!!", Toast.LENGTH_SHORT).show();
     }
 
     void loadResult(){
@@ -121,4 +146,24 @@ public class Leaderboard extends AppCompatActivity implements OnClickListener {
         ti4.setText(savedTime2);
 
     }
+    void loadResult2_3(){
+        sPref = getPreferences(MODE_PRIVATE);
+
+        String savedName2 = sPref.getString(SAVED_NAME2,"");
+        pl3.setText(savedName2);
+
+        String savedTime2 = sPref.getString(SAVED_TIME2,"");
+        ti3.setText(savedTime2);
+    }
+
+    void loadResult1_4(){
+        sPref = getPreferences(MODE_PRIVATE);
+
+        String savedName1 = sPref.getString(SAVED_NAME1,"");
+        pl4.setText(savedName1);
+
+        String savedTime1 = sPref.getString(SAVED_TIME1,"");
+        ti4.setText(savedTime1);
+    }
+
 }

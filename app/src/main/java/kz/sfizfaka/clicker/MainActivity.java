@@ -20,19 +20,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     String clicknumber1 = "Ready?";
     String sf = "";
     String sf1 = "";
-   // String sf3;
     int clickcount = 0;
     int clickcount1 = 0;
-    Button btn3;
-    Button btn4;
-    long firstclick;
-    long hundclick;
-    long finaltime;
-    long finaltime1;
+    Button btn3,btn4;
+    long firstclick,hundclick,finaltime,finaltime1,hundclick1;
     long firstclick1 = 0;
-    long hundclick1;
-    EditText etn1;
-    EditText etn2;
+    EditText etn1,etn2;
 
 
     @Override
